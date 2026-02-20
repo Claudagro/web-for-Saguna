@@ -690,6 +690,13 @@ body {
     }
 }
 
+@media (min-width: 769px) {
+    .main-content {
+        margin-left: var(--sidebar-w);
+        width: calc(100% - var(--sidebar-w));
+    }
+}
+
 /* ===== SETTINGS SECTIONS ===== */
 .settings-section {
     background: var(--card);
