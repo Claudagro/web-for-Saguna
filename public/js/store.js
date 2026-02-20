@@ -11,6 +11,12 @@ async function init() {
     await loadProducts();
     setupSearch();
     setupModal();
+
+    // Check if URL has a product ID to open modal automatically
+    if (window.location.pathname.startsWith('/product/')) {
+        const id = window.location.pathname.split('/product/')[1];
+        if (id) openProduct(id);
+    }
 }
 
 async function loadSettings() {
@@ -192,7 +198,8 @@ function buyNow(event, id) {
     const product = allProducts.find(p => p.id === id);
     if (!product) return;
 
-    const msg = `Hi! 👋 I'm interested in buying:\n\n*${product.name}*\nPrice: ${settings.currencySymbol || ''}${Number(product.price).toLocaleString()}\n\nPlease confirm availability and payment details. Thank you! 🙏`;
+    const productLink = `${window.location.origin}/product/${product.id}`;
+    const msg = `Hi! 👋 I'm interested in buying:\n\n*${product.name}*\nPrice: ${settings.currencySymbol || ''}${Number(product.price).toLocaleString()}\nLink: ${productLink}\n\nPlease confirm availability. Thank you! 🙏`;
     const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
 }

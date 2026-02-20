@@ -256,7 +256,35 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 app.get('/product/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const products = readProducts();
+  const product = products.find(p => p.id === req.params.id);
+  const settings = readSettings();
+
+  const indexPath = path.join(__dirname, 'public', 'index.html');
+  let html = fs.readFileSync(indexPath, 'utf8');
+
+  if (product) {
+    const escapeHtmlAttr = str => String(str).replace(/"/g, '&quot;');
+    const title = escapeHtmlAttr(`${product.name} - ${settings.storeName}`);
+    const desc = escapeHtmlAttr(product.description || settings.storeTagline || '');
+    const imgUrl = product.images && product.images.length > 0 ? product.images[0] : settings.heroBannerImage;
+    const fullImgUrl = imgUrl ? (req.protocol + '://' + req.get('host') + imgUrl) : '';
+    const url = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+    const ogTags = `
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:image" content="${fullImgUrl}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:type" content="product">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="${fullImgUrl}">
+    `;
+
+    html = html.replace('</head>', ogTags + '\n</head>');
+  }
+
+  res.send(html);
 });
 
 app.listen(PORT, () => {
