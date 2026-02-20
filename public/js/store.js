@@ -390,8 +390,10 @@ function checkoutCart() {
     cart.forEach(item => {
         const itemTotal = item.price * item.qty;
         total += itemTotal;
+        const productLink = `${window.location.origin}/product/${item.id}`;
         msg += `🛒 *${item.name}*\n`;
-        msg += `   Qty: ${item.qty} x ${settings.currencySymbol || ''}${item.price.toLocaleString()} = ${settings.currencySymbol || ''}${itemTotal.toLocaleString()}\n\n`;
+        msg += `   Qty: ${item.qty} x ${settings.currencySymbol || ''}${item.price.toLocaleString()} = ${settings.currencySymbol || ''}${itemTotal.toLocaleString()}\n`;
+        msg += `   Link: ${productLink}\n\n`;
     });
     msg += `*Total Amount:* ${settings.currencySymbol || ''}${total.toLocaleString()}\n\n`;
     msg += `Please confirm my order. Thank you! 🙏`;
