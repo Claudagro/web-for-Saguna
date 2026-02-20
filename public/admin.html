@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-page">
+        <div class="login-card">
+            <div class="login-logo">🔐</div>
+            <h1>Admin Login</h1>
+            <p>Enter your password to manage the store</p>
+            <form id="loginForm">
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter admin password" required
+                        autocomplete="current-password" />
+                </div>
+                <button type="submit" class="btn-primary" id="loginBtn">Login →</button>
+                <div id="loginError" class="error-msg" style="display:none">❌ Wrong password. Try again.</div>
+            </form>
+            <a href="/" class="back-link">← Back to Store</a>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard" style="display:none">
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <span>🛍️</span>
+                <span id="sidebarStoreName">ShopEase</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" data-tab="products" onclick="showTab('products',this)">📦 Products</a>
+                </li>
+                <li><a href="#" data-tab="add" onclick="showTab('add',this)">➕ Add Product</a></li>
+                <li><a href="#" data-tab="settings" onclick="showTab('settings',this)">⚙️ Settings</a></li>
+            </ul>
+            <div class="sidebar-bottom">
+                <a href="/" target="_blank" class="view-store-btn">🌐 View Store</a>
+                <button onclick="logout()" class="logout-btn">🚪 Logout</button>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- PRODUCTS TAB -->
+            <div id="tab-products" class="tab active">
+                <div class="tab-header">
+                    <div>
+                        <h2>Products</h2>
+                        <p class="tab-sub" id="productCount">0 products in store</p>
+                    </div>
+                    <button class="btn-primary" onclick="showTab('add', document.querySelector('[data-tab=add]'))">+ Add
+                        Product</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="adminSearch" placeholder="🔍 Search products..."
+                        oninput="filterAdminProducts()" />
+                </div>
+                <div id="adminProductGrid" class="admin-product-grid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADD PRODUCT TAB -->
+            <div id="tab-add" class="tab">
+                <div class="tab-header">
+                    <div>
+                        <h2 id="addTabTitle">Add New Product</h2>
+                        <p class="tab-sub">Fill in the product details</p>
+                    </div>
+                </div>
+                <form id="addProductForm" class="product-form" enctype="multipart/form-data">
+                    <input type="hidden" id="editProductId" />
+                    <div class="form-grid">
+                        <div class="field">
+                            <label>Product Name *</label>
+                            <input type="text" id="prodName" placeholder="e.g. Nike Air Max 2024" required />
+                        </div>
+                        <div class="field">
+                            <label>Price *</label>
+                            <input type="number" id="prodPrice" placeholder="e.g. 5999" min="0" step="0.01" required />
+                        </div>
+                        <div class="field">
+                            <label>Category</label>
+                            <input type="text" id="prodCategory" placeholder="e.g. Shoes, Electronics" />
+                        </div>
+                        <div class="field field-full">
+                            <label>Description (optional)</label>
+                            <textarea id="prodDesc" placeholder="Product description, features, sizes available..."
+                                rows="3"></textarea>
+                        </div>
+                        <div class="field field-full">
+                            <label>Product Images</label>
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="prodImages" multiple accept="image/*"
+                                    onchange="previewImages(this)" />
+                                <div class="upload-placeholder" id="uploadPlaceholder">
+                                    <span class="upload-icon">📸</span>
+                                    <p>Click or drag images here</p>
+                                    <small>Max 10 images · JPG, PNG, WebP</small>
+                                </div>
+                                <div class="image-previews" id="imagePreviews"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="resetForm()">Clear Form</button>
+                        <button type="submit" class="btn-primary" id="submitProductBtn">✓ Save Product</button>
+                    </div>
+                    <div id="formMsg" class="form-msg"></div>
+                </form>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="tab-settings" class="tab">
+                <div class="tab-header">
+                    <div>
+                        <h2>Store Settings</h2>
+                        <p class="tab-sub">Configure your store</p>
+                    </div>
+                </div>
+                <form id="settingsForm" class="product-form">
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">🖼️ Hero Banner</h3>
+                        <div class="hero-banner-upload">
+                            <div class="hero-preview-wrap" id="heroBannerPreviewWrap" style="display:none">
+                                <img id="heroBannerPreview" src="" alt="Hero Banner" />
+                                <button type="button" class="remove-banner-btn" id="removeBannerBtn"
+                                    onclick="removeBanner()">✕ Remove Image</button>
+                            </div>
+                            <div class="hero-upload-zone" id="heroBannerUploadZone">
+                                <input type="file" id="heroBannerInput" accept="image/*"
+                                    onchange="uploadBanner(this)" />
+                                <span class="upload-icon">🖼️</span>
+                                <p>Upload Hero Banner Image</p>
+                                <small>Recommended: 1920×600px · JPG, PNG, WebP</small>
+                            </div>
+                        </div>
+                        <div class="form-grid" style="margin-top:16px">
+                            <div class="field">
+                                <label>Hero Title</label>
+                                <input type="text" id="setHeroTitle" placeholder="e.g. Discover Amazing Products" />
+                            </div>
+                            <div class="field">
+                                <label>Hero Subtitle</label>
+                                <input type="text" id="setHeroSubtitle"
+                                    placeholder="e.g. Quality Products, Best Prices" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">🏪 Store Info</h3>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label>Store Name</label>
+                                <input type="text" id="setStoreName" placeholder="Your Store Name" />
+                            </div>
+                            <div class="field">
+                                <label>Store Tagline</label>
+                                <input type="text" id="setTagline" placeholder="e.g. Quality Products, Best Prices" />
+                            </div>
+                            <div class="field">
+                                <label>WhatsApp Number</label>
+                                <input type="text" id="setWhatsapp"
+                                    placeholder="Country code + number (e.g. 923001234567)" />
+                                <small style="color:#888;margin-top:4px;display:block">Include country code, no + or
+                                    spaces. E.g. 923001234567</small>
+                            </div>
+                            <div class="field">
+                                <label>Currency Symbol</label>
+                                <input type="text" id="setCurrencySymbol" placeholder="e.g. ₨ or $ or ₹" />
+                            </div>
+                            <div class="field">
+                                <label>Currency Code</label>
+                                <input type="text" id="setCurrency" placeholder="e.g. PKR or USD" />
+                            </div>
+                            <div class="field">
+                                <label>Primary Color</label>
+                                <div class="color-field">
+                                    <input type="color" id="setPrimaryColor" value="#6C63FF" />
+                                    <input type="text" id="setPrimaryColorText" placeholder="#6C63FF" />
+                                </div>
+                            </div>
+                            <div class="field field-full">
+                                <label>New Admin Password</label>
+                                <input type="password" id="setPassword"
+                                    placeholder="Leave blank to keep current password" autocomplete="new-password" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">💾 Save Settings</button>
+                    </div>
+                    <div id="settingsMsg" class="form-msg"></div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>
