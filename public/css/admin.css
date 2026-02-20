@@ -85,9 +85,8 @@ body {
 
 /* ===== DASHBOARD LAYOUT ===== */
 .dashboard {
-    display: grid;
-    grid-template-columns: var(--sidebar-w) 1fr;
     min-height: 100vh;
+    display: block;
 }
 
 /* ===== SIDEBAR ===== */
