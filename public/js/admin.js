@@ -405,6 +405,14 @@ function showTab(tabId, link) {
     if (link) link.classList.add('active');
     // If switching away from add while editing, reset
     if (tabId !== 'add') resetForm();
+
+    // Close mobile menu if open
+    if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    }
 }
 
 // ===== UTILS =====
@@ -418,6 +426,21 @@ function showFormMsg(id, type, msg) {
 function escHtml(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ===== MOBILE NAV =====
+function toggleMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('mobileOverlay');
+    sidebar.classList.toggle('active');
+
+    if (sidebar.classList.contains('active')) {
+        overlay.style.display = 'block';
+        setTimeout(() => overlay.classList.add('active'), 10);
+    } else {
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.style.display = 'none', 300);
+    }
 }
 
 init();
