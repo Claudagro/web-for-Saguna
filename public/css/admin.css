@@ -189,9 +189,9 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .main-content {
-    margin-left: var(--sidebar-w);
     padding: 32px;
     min-height: 100vh;
+    width: 100%;
 }
 
 /* ===== TABS ===== */
@@ -697,6 +697,8 @@ body {
     border-radius: var(--radius);
     padding: 24px;
     margin-bottom: 24px;
+    width: 100%;
+    display: block;
 }
 
 .settings-section-title {
