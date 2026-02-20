@@ -90,7 +90,10 @@ function renderAdminProducts(products) {
         <div class="admin-card-body">
           <div class="admin-card-cat">${escHtml(p.category || 'Product')}</div>
           <div class="admin-card-name" title="${escHtml(p.name)}">${escHtml(p.name)}</div>
-          <div class="admin-card-price">${adminSettings.currencySymbol || ''}${Number(p.price).toLocaleString()}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div class="admin-card-price" style="margin-bottom:0">${adminSettings.currencySymbol || ''}${Number(p.price).toLocaleString()}</div>
+            <div style="font-size:0.8rem; font-weight:600; color: ${p.stock > 0 ? 'var(--success)' : 'var(--danger)'}">Stock: ${p.stock || 0}</div>
+          </div>
           <div class="admin-card-actions">
             <button class="btn-edit" onclick="editProduct('${p.id}')">✏️ Edit</button>
             <button class="btn-delete" onclick="deleteProduct('${p.id}', '${escHtml(p.name)}')">🗑️ Delete</button>
@@ -111,6 +114,7 @@ function setupAddForm() {
         const formData = new FormData();
         formData.append('name', document.getElementById('prodName').value);
         formData.append('price', document.getElementById('prodPrice').value);
+        formData.append('stock', document.getElementById('prodStock').value);
         formData.append('category', document.getElementById('prodCategory').value);
         formData.append('description', document.getElementById('prodDesc').value);
 
@@ -157,6 +161,7 @@ function editProduct(id) {
     document.getElementById('editProductId').value = p.id;
     document.getElementById('prodName').value = p.name;
     document.getElementById('prodPrice').value = p.price;
+    document.getElementById('prodStock').value = p.stock || 0;
     document.getElementById('prodCategory').value = p.category || '';
     document.getElementById('prodDesc').value = p.description || '';
     document.getElementById('addTabTitle').textContent = 'Edit Product';

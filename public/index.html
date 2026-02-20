@@ -78,7 +78,11 @@
         <div class="modal-info">
           <span class="modal-category" id="modalCategory"></span>
           <h2 class="modal-title" id="modalName"></h2>
-          <div class="modal-price" id="modalPrice"></div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div class="modal-price" id="modalPrice" style="margin-bottom: 0;"></div>
+            <div id="modalStock" style="font-size: 0.85rem; font-weight: 700; padding: 4px 10px; border-radius: 6px;">
+            </div>
+          </div>
           <p class="modal-desc" id="modalDesc"></p>
           <button class="btn-buy" id="modalBuyBtn">
             <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">

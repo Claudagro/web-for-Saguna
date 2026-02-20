@@ -133,7 +133,7 @@ app.post('/api/admin/login', (req, res) => {
 
 // Add product (with images)
 app.post('/api/admin/products', adminAuth, upload.array('images', 10), (req, res) => {
-  const { name, price, description, category } = req.body;
+  const { name, price, description, category, stock } = req.body;
   if (!name || !price) return res.status(400).json({ error: 'Name and price are required' });
 
   const images = (req.files || []).map(f => `/uploads/${f.filename}`);
@@ -141,6 +141,7 @@ app.post('/api/admin/products', adminAuth, upload.array('images', 10), (req, res
     id: uuidv4(),
     name: name.trim(),
     price: parseFloat(price),
+    stock: stock ? parseInt(stock, 10) : 0,
     description: description ? description.trim() : '',
     category: category ? category.trim() : 'General',
     images,
@@ -159,7 +160,7 @@ app.put('/api/admin/products/:id', adminAuth, upload.array('images', 10), (req, 
   const idx = products.findIndex(p => p.id === req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Not found' });
 
-  const { name, price, description, category, keepImages } = req.body;
+  const { name, price, description, category, stock, keepImages } = req.body;
   const newImages = (req.files || []).map(f => `/uploads/${f.filename}`);
 
   // Keep existing images if specified
@@ -172,6 +173,7 @@ app.put('/api/admin/products/:id', adminAuth, upload.array('images', 10), (req, 
     ...products[idx],
     name: name ? name.trim() : products[idx].name,
     price: price ? parseFloat(price) : products[idx].price,
+    stock: stock !== undefined ? parseInt(stock, 10) : products[idx].stock || 0,
     description: description !== undefined ? description.trim() : products[idx].description,
     category: category ? category.trim() : products[idx].category,
     images: [...existingImages, ...newImages],

@@ -1,20 +1,21 @@
 /* ===== Admin Dashboard Styles ===== */
 :root {
-    --primary: #6C63FF;
-    --primary-dark: #5a52d5;
-    --bg: #0f0f1a;
-    --surface: #1a1a2e;
-    --surface2: #16213e;
-    --card: #1e1e35;
-    --text: #f0f0f0;
-    --text-dim: #a0a0b8;
-    --border: rgba(108, 99, 255, 0.2);
-    --success: #25D366;
-    --danger: #ff4d6d;
-    --warning: #ffc107;
-    --radius: 14px;
-    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary: #111827;
+    --primary-dark: #000000;
+    --bg: #F9FAFB;
+    --surface: #ffffff;
+    --surface2: #F3F4F6;
+    --card: #ffffff;
+    --text: #111827;
+    --text-dim: #6B7280;
+    --border: #E5E7EB;
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --transition: 0.2s ease-out;
     --sidebar-w: 240px;
 }
 
@@ -38,9 +39,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(255, 101, 132, 0.1) 0%, transparent 60%),
-        var(--bg);
+    background: var(--bg);
 }
 
 .login-card {
@@ -109,14 +108,11 @@ body {
     align-items: center;
     gap: 10px;
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
+    color: var(--text);
     padding: 8px 12px 24px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--primary), #FF6584);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .sidebar-menu {
@@ -139,8 +135,9 @@ body {
 
 .sidebar-menu a:hover,
 .sidebar-menu a.active {
-    background: rgba(108, 99, 255, 0.15);
-    color: var(--primary);
+    background: var(--surface2);
+    color: var(--text);
+    font-weight: 600;
 }
 
 .sidebar-bottom {
@@ -156,8 +153,8 @@ body {
     display: block;
     text-align: center;
     padding: 10px;
-    background: rgba(108, 99, 255, 0.1);
-    color: var(--primary);
+    background: var(--surface2);
+    color: var(--text);
     border-radius: 10px;
     text-decoration: none;
     font-weight: 600;
@@ -166,12 +163,12 @@ body {
 }
 
 .view-store-btn:hover {
-    background: rgba(108, 99, 255, 0.25);
+    background: #e2e8f0;
 }
 
 .logout-btn {
     padding: 10px;
-    background: rgba(255, 77, 109, 0.1);
+    background: #FEE2E2;
     color: var(--danger);
     border: none;
     border-radius: 10px;
@@ -183,7 +180,7 @@ body {
 }
 
 .logout-btn:hover {
-    background: rgba(255, 77, 109, 0.25);
+    background: #FECACA;
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -257,12 +254,12 @@ body {
     border-radius: var(--radius);
     overflow: hidden;
     transition: var(--transition);
+    box-shadow: var(--shadow);
 }
 
 .admin-card:hover {
-    border-color: var(--primary);
     transform: translateY(-4px);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-hover);
 }
 
 .admin-card-img {
@@ -330,23 +327,21 @@ body {
 }
 
 .btn-edit {
-    background: rgba(108, 99, 255, 0.15);
-    color: var(--primary);
+    background: var(--surface2);
+    color: var(--text);
 }
 
 .btn-edit:hover {
-    background: var(--primary);
-    color: white;
+    background: #e2e8f0;
 }
 
 .btn-delete {
-    background: rgba(255, 77, 109, 0.15);
+    background: #FEE2E2;
     color: var(--danger);
 }
 
 .btn-delete:hover {
-    background: var(--danger);
-    color: white;
+    background: #FECACA;
 }
 
 /* ===== FORM ===== */
@@ -532,14 +527,15 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: var(--primary);
     color: white;
-    box-shadow: 0 4px 16px rgba(108, 99, 255, 0.35);
+    box-shadow: var(--shadow);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(108, 99, 255, 0.5);
+    background: var(--primary-dark);
+    box-shadow: var(--shadow-hover);
 }
 
 .btn-primary:disabled {
@@ -680,11 +676,8 @@ body {
 
 .mobile-logo {
     font-weight: 800;
-    font-size: 1.1rem;
-    background: linear-gradient(135deg, var(--primary), var(--danger));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 1.25rem;
+    color: var(--text);
 }
 
 .menu-toggle {
